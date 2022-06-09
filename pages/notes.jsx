@@ -1,14 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import Loading from "../images/loading.png";
 import { Fragment } from "react";
-import Nav from "../components/Nav";
 import { fetchNotes } from "../utils/fetchNotes";
 
 function notes({ notes }) {
 	return (
 		<Fragment>
-			<Nav data={notes} />
+			<h1>hi</h1>
 		</Fragment>
 	);
 }

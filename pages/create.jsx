@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { Fragment, useState } from 'react'
 import Router from "next/router";
 
-function create_note() {
+function create() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
 
@@ -29,4 +29,4 @@ function create_note() {
   )
 }
 
-export default create_note
+export default create

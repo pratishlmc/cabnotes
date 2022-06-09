@@ -1,15 +1,22 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import notLoggedIn from "../images/not_logged_in.png";
-import Image from "next/image";
 import Router, { useRouter } from "next/router";
 import { fetchNotes } from "../utils/fetchNotes";
 import { fetchTasks } from "../utils/fetchTasks";
 import Notes from "../components/Notes";
 import Tasks from "../components/Tasks";
 import Loading from "../components/Loading";
-import Header from "../components/Header";
+import {
+	Tabs,
+	TabList,
+	TabPanels,
+	Tab,
+	TabPanel,
+	Button,
+	Flex,
+	Box,
+} from "@chakra-ui/react";
 
 export default function Home({ notes, tasks }) {
 	const [isChanged, setIsChanged] = useState(false);
@@ -27,50 +34,44 @@ export default function Home({ notes, tasks }) {
 
 	if (status === "authenticated") {
 		return (
-			<>
-				<div className="main">
-					<div className="task_state_nav">
-						<div
-							onClick={() => (setIsChanged(false), refresh())}
-							className={isChanged === false ? "active_nav_child" : "nav_child"}
-						>
-							<span>Notes</span>
-						</div>
-						<div
-							onClick={() => (setIsChanged(true), refresh())}
-							className={isChanged === true ? "active_nav_child" : "nav_child"}
-						>
-							<span>Tasks</span>
-						</div>
-					</div>
-					<hr style={{ width: "100%", margin: "20px" }} />
-					<div className="note_container">
-						{isChanged === false ? (
-							<Notes notes={notes} />
-						) : (
-							<Tasks tasks={tasks} />
-						)}
-					</div>
-				</div>
-			</>
+			<Fragment>
+				<Flex bg={"red.100"}>
+					<Tabs p={1} variant={"unstyled"} w={"full"}>
+						<TabList>
+							<Flex justifyContent={"center"} w={"full"} gap={2}>
+								<Tab
+									_focus={"none"}
+									bg={"gray.50"}
+									rounded={"sm"}
+									w={32}
+									_selected={{ bg: "gray.200" }}
+								>
+									Notes
+								</Tab>
+								<Tab
+									_focus={"none"}
+									bg={"gray.50"}
+									rounded={"sm"}
+									w={32}
+									_selected={{ bg: "gray.200" }}
+								>
+									Tasks
+								</Tab>
+							</Flex>
+						</TabList>
+						<Box mt={3} pl={80} pr={80}>
+							<TabPanels w={"full"} mt={5} bg={"blue.100"}>
+								<TabPanel>
+									<Notes notes={notes} />
+								</TabPanel>
+								<TabPanel>{/* <Tasks tasks={tasks} /> */}</TabPanel>
+							</TabPanels>
+						</Box>
+					</Tabs>
+				</Flex>
+			</Fragment>
 		);
 	}
-
-	return (
-		<>
-			<div
-				style={{
-					display: "flex",
-					width: "100%",
-					height: "400px",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<Image src={notLoggedIn} height="400" width="400" />
-			</div>
-		</>
-	);
 }
 
 export const getServerSideProps = async () => {

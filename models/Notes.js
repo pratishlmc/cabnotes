@@ -12,6 +12,15 @@ const NoteSchema = new Schema({
     required: true,
     maxlength: [200, 'Exceeds 200 characters']
   },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+    immutable: true
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  }
 })
 
 const Note = models.Note || model('Note', NoteSchema);

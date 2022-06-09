@@ -1,18 +1,23 @@
 import '../styles/globals.css'
 import { Toaster } from 'react-hot-toast'
-import { SessionProvider, signIn, signOut } from "next-auth/react"
+import { SessionProvider } from "next-auth/react"
 import Header from '../components/Header'
-import { useState, useEffect } from 'react';
-
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
+import theme from '../constants/theme'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en.json'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
-
+  TimeAgo.addDefaultLocale(en)
   return (
     <>
-      <Toaster />
       <SessionProvider session={session}>
-        <Header />
-        <Component {...pageProps} />
+        <ChakraProvider>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <Toaster />
+          <Header />
+          <Component {...pageProps} />
+        </ChakraProvider>
       </SessionProvider>
     </>
 

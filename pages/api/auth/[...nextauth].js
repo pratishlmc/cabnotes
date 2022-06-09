@@ -5,7 +5,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import clientPromise from "../../../utils/mongodb"
 
 export default NextAuth({
-  site: process.env.NEXTAUTH_URL,
+  site: "*",
   adapter: MongoDBAdapter(clientPromise),
 
   providers: [
