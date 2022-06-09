@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import lottie from "lottie-web";
-import UseAnimations from "react-useanimations";
 
-function Icons({ icon, reference, name, animation, bool }) {
+function Icons({ icon, reference, name, animation, bool, size }) {
 	const [type, setType] = useState(animation);
 	const container = useRef(reference);
 	const [checked, setChecked] = useState(true);
-
-	// function action() {
-	// 	setChecked(!checked);
-	// }
 
 	useEffect(() => {
 		lottie.loadAnimation({
@@ -30,8 +25,8 @@ function Icons({ icon, reference, name, animation, bool }) {
 		return (
 			<div
 				ref={container}
-				style={{ cursor: "pointer", width: "100px", height: "100px" }}
-				onMouseEnter={() => lottie.play(name)}
+				style={{ cursor: "pointer", width: size }}
+				onMouseEnter={() => (lottie.play(name))}
 				onMouseLeave={() => lottie.stop(name)}
 			/>
 		);
@@ -41,10 +36,8 @@ function Icons({ icon, reference, name, animation, bool }) {
 		return (
 			<div
 				ref={container}
-				style={{ cursor: "pointer", width: "100px", height: "100px" }}
-				onClick={() =>
-					lottie.stop() ? lottie.play(name) : lottie.stop(name)
-				}
+				style={{ cursor: "pointer", width: size }}
+				onClick={() => (lottie.stop() ? lottie.play(name) : lottie.stop(name))}
 			/>
 		);
 	}

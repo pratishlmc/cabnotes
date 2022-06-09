@@ -1,11 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as Hero from "@heroicons/react/outline";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { fetchNotes } from "../utils/fetchNotes";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { fetchTasks } from "../utils/fetchTasks";
-import Image from "next/image";
+import {
+	Box,
+	HStack,
+	Spacer,
+	Text,
+	Flex,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	MenuItemOption,
+	MenuOptionGroup,
+	Button,
+	MenuDivider,
+	Image,
+	WrapItem,
+} from "@chakra-ui/react";
+import ReactTimeAgo from "react-time-ago";
+import Icons from "./Icons";
+import trash from "react-useanimations/lib/trash2";
+import edit from "react-useanimations/lib/edit";
+import bookmark from "react-useanimations/lib/bookmark";
+import checkbox from "react-useanimations/lib/checkBox";
+import lottie from "lottie-web";
 
 function Tasks({ tasks }) {
 	const [showCompleted, setShowCompleted] = useState(true);
@@ -28,6 +51,14 @@ function Tasks({ tasks }) {
 		});
 	};
 
+	function playanimation(item) {
+		lottie.play(item);
+	}
+
+	function stopanimation(item) {
+		lottie.stop(item);
+	}
+
 	if (!data) {
 		return (
 			<>
@@ -41,126 +72,65 @@ function Tasks({ tasks }) {
 	}
 
 	return (
-		<>
-			<div className="note_container">
-				{data.map((item, i) => (
-					<div key={i} style={{ display: "flex" }}>
-						{!item.completed && (
-							<>
-								<div
-									className="note-card"
-									style={{
-										height: "50px",
-										display: "flex",
-										alignItems: "center",
-									}}
-								>
-									<div>
-										<span className="note_title">{item.content}</span>
-									</div>
-								</div>
-								<div
-									style={{
-										display: "flex",
-										height: "50px",
-									}}
-								>
-									<div
-										onClick={(e) => handleChange(item)}
-										className="action-container"
-										style={{ backgroundColor: "#C1E1C1" }}
-									>
-										<Hero.CheckIcon
-											style={{
-												width: "24px",
-												height: "24px",
-											}}
-										/>
-									</div>
-									<div
-										onClick={(e) => handleDelete(item)}
-										className="action-container"
-										style={{
-											backgroundColor: "#ff6961",
-											borderStartEndRadius: "5px",
-											borderEndEndRadius: "5px",
-										}}
-									>
-										<Hero.TrashIcon style={{ width: "28px" }} />
-									</div>
-								</div>
-							</>
-						)}
-					</div>
-				))}
-			</div>
-			<div
-				onClick={() => setShowCompleted(!showCompleted)}
-				className="show-completed"
-			>
-				{showCompleted ? (
-					<Hero.ChevronDownIcon style={{ width: "14px", marginRight: "5px" }} />
-				) : (
-					<Hero.ChevronUpIcon style={{ width: "14px", marginRight: "5px" }} />
-				)}
-				<span style={{ fontSize: "15px" }}>Completed</span>
-			</div>
-			<div>
-				<div className="note_container">
-					{showCompleted &&
-						data.map((item, i) => (
-							<div key={i} style={{ display: "flex" }}>
-								{item.completed && (
-									<>
-										<div
-											className="note-card"
-											style={{
-												height: "50px",
-												display: "flex",
-												alignItems: "center",
-											}}
-										>
-											<div>
-												<span className="note_title">{item.content}</span>
-											</div>
-										</div>
-										<div
-											style={{
-												display: "flex",
-												height: "50px",
-											}}
-										>
-											<div
-												onClick={(e) => handleChange(item)}
-												className="action-container"
-												style={{ backgroundColor: "#B6DDEE" }}
-											>
-												<Hero.ReplyIcon
-													style={{
-														width: "24px",
-														height: "24px",
-													}}
-												/>
-											</div>
-											<div
-												onClick={(e) => handleDelete(item)}
-												className="action-container"
-												style={{
-													backgroundColor: "#ff6961",
-													borderStartEndRadius: "5px",
-													borderEndEndRadius: "5px",
-												}}
-											>
-												<Hero.TrashIcon style={{ width: "28px" }} />
-											</div>
-										</div>
-									</>
-								)}
-							</div>
-						))}
-				</div>
-			</div>
-		</>
+		<Flex direction={"column"} w={"full"} gap={2}>
+			{data.map((item, i) => (
+				<Flex key={i}>
+					<Icons
+						icon={checkbox.animationData}
+						name="checkbox-icon"
+						size={30}
+						reference="checkboxicon"
+						animation="hover"
+					/>
+					<Flex p={2} rounded={"md"} w={"full"} ml={1} mr={1} bg={"gray.100"}>
+						<Text fontWeight={500} noOfLines={1} textOverflow={"ellipsis"}>
+							{item.content}
+						</Text>
+						<Spacer />
+						<Box>
+							<Icons
+								icon={bookmark.animationData}
+								reference={"bookmarkicon"}
+								name="bookmark-icon"
+								size={25}
+								animation="hover"
+							/>
+						</Box>
+					</Flex>
+					<Flex>
+						<Button
+							closeOnSelect={false}
+							onMouseEnter={() => playanimation("edit-icon")}
+							onMouseLeave={() => stopanimation("edit-icon")}
+							p={0}
+						>
+							<Icons
+								icon={edit.animationData}
+								name="edit-icon"
+								size={28}
+								animation="hover"
+								reference="editicon"
+							/>
+						</Button>
+						<Box w={1} />
+						<Button
+							closeOnSelect={false}
+							onMouseEnter={() => playanimation("trash-icon")}
+							onMouseLeave={() => stopanimation("trash-icon")}
+							p={0}
+						>
+							<Icons
+								icon={trash.animationData}
+								name="trash-icon"
+								size={25}
+								reference="trashicon"
+								animation="hover"
+							/>
+						</Button>
+					</Flex>
+				</Flex>
+			))}
+		</Flex>
 	);
 }
 

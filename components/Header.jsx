@@ -39,7 +39,7 @@ function Header() {
 			className="header"
 		>
 			<Link href="/">
-				<Flex direction={"column"}>
+				<Flex cursor={"pointer"} direction={"column"}>
 					<Text fontSize={40} fontWeight={"bold"} className={"titleText"}>
 						Notes
 					</Text>

@@ -5,12 +5,12 @@ const NoteSchema = new Schema({
     type: String,
     required: [true, 'Please as a title'],
     trim: true,
-    maxlength: [24, 'Exceeds 40 characters']
+    maxlength: [90, 'Exceeds 90 characters']
   },
   description: {
     type: String,
     required: true,
-    maxlength: [200, 'Exceeds 200 characters']
+    // maxlength: [2000, 'Exceeds 2000 characters']
   },
   createdAt: {
     type: Date,

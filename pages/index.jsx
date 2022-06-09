@@ -35,7 +35,7 @@ export default function Home({ notes, tasks }) {
 	if (status === "authenticated") {
 		return (
 			<Fragment>
-				<Flex bg={"red.100"}>
+				<Flex>
 					<Tabs p={1} variant={"unstyled"} w={"full"}>
 						<TabList>
 							<Flex justifyContent={"center"} w={"full"} gap={2}>
@@ -60,11 +60,13 @@ export default function Home({ notes, tasks }) {
 							</Flex>
 						</TabList>
 						<Box mt={3} pl={80} pr={80}>
-							<TabPanels w={"full"} mt={5} bg={"blue.100"}>
+							<TabPanels w={"full"} mt={5}>
 								<TabPanel>
 									<Notes notes={notes} />
 								</TabPanel>
-								<TabPanel>{/* <Tasks tasks={tasks} /> */}</TabPanel>
+								<TabPanel>
+									<Tasks tasks={tasks} />
+								</TabPanel>
 							</TabPanels>
 						</Box>
 					</Tabs>
